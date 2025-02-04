@@ -30,11 +30,24 @@
         <div class="col-lg-6 text-center text-lg-right">
             <div class="d-inline-flex align-items-center">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Hesabım</button>
+                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">
+                        @if(session('name') && session('surname'))
+                            {{session('name')}} {{session('surname')}}
+                        @else
+                            Hesabım
+                        @endif
+
+                    </button>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="{{route('user.register')}}" class="dropdown-item" type="button">Kayıt Ol</a>
-                        <a href="{{route('user.login')}}" class="dropdown-item" type="button">Giriş</a>
+                    @if(session('name') && session('surname'))
+                            <a href="{{route('user.logout')}}" class="dropdown-item" type="button">Çıkış Yap</a>
+                    @else
+                            <a href="{{route('user.register')}}" class="dropdown-item" type="button">Kayıt Ol</a>
+                            <a href="{{route('user.login')}}" class="dropdown-item" type="button">Giriş</a>
+                    @endif
+
                     </div>
+
                 </div>
                 <div class="btn-group mx-2">
                     <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">USD</button>

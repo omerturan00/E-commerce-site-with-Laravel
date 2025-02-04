@@ -1,6 +1,10 @@
 @extends('_inc.master')
 @section('pageContent')
-
+    @if ($errors->has('error'))
+        <div class="alert alert-danger">
+            {{ $errors->first('error') }}
+        </div>
+    @endif
     <!-- Carousel Start -->
     <div class="container-fluid mb-3">
         <div class="row px-xl-5">
@@ -275,7 +279,7 @@
                         <div class="product-img position-relative overflow-hidden">
                             <img class="img-fluid w-100" src="{{$product['image']}}" alt="">
                             <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square add-to-card" data-id="{{$product['product_id']}}"><i class="fa fa-shopping-cart"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
@@ -284,15 +288,11 @@
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate" href="">{{$product['name']}}</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small>(99)</small>
+                                    @if($product['price']['sale_price'] && $product['price']['currency_symbol'])
+                                       <h5> {{$product['price']['sale_price']}}{{$product['price']['currency_symbol']}}</h5>
+                                    @else
+                                       <p>Fiyatları görmek için giriş yapınız</p>
+                                    @endif
                             </div>
                         </div>
                     </div>
@@ -305,4 +305,34 @@
 
 
 
+@endsection
+@section('pageCss')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+@section('pageJs')
+    <script>
+        $(document).ready(function (){
+            $('.add-to-card').click(function (){
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                let pid = $(this).data('id');
+                $.ajax({
+                    url: "{{route('addToCart')}}",
+                    type: "POST",
+                    data: {
+                        product_id : pid
+                    },
+                    success:function (response){
+                        console.log('eklendi');
+                    },
+                    error:function (response){
+                        console.log("olmadı");
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

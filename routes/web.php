@@ -10,16 +10,17 @@ Route::get('/register', [UserController::class, 'register'])->name('user.registe
 Route::post('/register-post', [UserController::class, 'registerPost'])->name('user.register.post');
 Route::get('/register/account-activate', [UserController::class, 'registerAccountActivate'])->name('user.register.accountActive');
 Route::post('/register/account-activate', [UserController::class, 'registerAccountActivate'])->name('user.register.accountActive');
-
 Route::get('/login', [UserController::class, 'login'])->name('user.login');
 Route::post('/login-post', [UserController::class, 'loginPost'])->name('user.login.post');
+Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
 
 
 
 
 
-
-
+Route::prefix('shopping-bag',)->group(function (){
+    Route::post('addToCart', [MainController::class, 'addToCart'])->name('addToCart');
+});
 
 
 

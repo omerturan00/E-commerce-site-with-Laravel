@@ -9,6 +9,11 @@
                     <div class="row">
                         <div class="col-lg-2"></div>
                         <div class="col-lg-8">
+                            @if ($errors->has('error'))
+                                <div class="alert alert-danger">
+                                    {{ $errors->first('error') }}
+                                </div>
+                            @endif
                             <div class="text-center"><strong><h2>Giriş Yap!</h2></strong></div>
                             <form action="{{route('user.login.post')}}" method="post">
                                 @csrf

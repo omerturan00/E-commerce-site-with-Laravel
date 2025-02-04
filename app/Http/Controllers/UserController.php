@@ -153,15 +153,38 @@ class UserController extends Controller
             'password' => md5(sha1($password))
         ]);
         if ($response->successful()){
-
-            
-
+            $res = $response->json();
+            session([
+                'login' => true,
+                'name' => $res['user']['name'],
+                'surname' => $res['user']['surname'],
+                'token' => $res['token'],
+                'tokenType' => $res['tokenType']
+            ]);
+            return redirect()->to(route('homePage'));
         }else{
-            echo "şifre yanlış";
+            return redirect()->to(route('user.login'))->withErrors([
+                'error' => 'Girilen bilgiler ile kayıtlı bir kullanıcı bulunmamaktadır. Lütfen tekrar deneyiniz.'
+            ]);
         }
 
     }
-
+    public function logout()
+    {
+        $url = $this->url."api/logout";
+        $response = Http::post($url, [
+            'token' => session('token'),
+            'tokenType' => session('tokenType')
+        ]);
+        if ($response->successful()){
+            session()->flush();
+            return redirect()->to(route('homePage'));
+        }else{
+            return redirect()->to(route('homePage'))->withErrors([
+                'error' => "Çıkış işlemi sırasında bir hata oluştu"
+            ]);
+        }
+    }
 
 
 
