@@ -325,11 +325,11 @@
                     data: {
                         product_id : pid
                     },
-                    success:function (response){
-                        console.log('eklendi');
+                    success: function(response) {
+                        console.log("eklendi");
                     },
-                    error:function (response){
-                        console.log("olmadı");
+                    error: function(xhr) {
+                        alert("Bir hata oluştu: " + xhr.responseJSON.message);
                     }
                 });
             });

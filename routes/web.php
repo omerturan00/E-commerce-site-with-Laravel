@@ -19,6 +19,7 @@ Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
 
 
 Route::prefix('shopping-bag',)->group(function (){
+    Route::get('', [MainController::class, 'shoppingBag'])->name('shoppingBag');
     Route::post('addToCart', [MainController::class, 'addToCart'])->name('addToCart');
 });
 

@@ -34,20 +34,31 @@ class MainController extends Controller
 
 
 
+    public function shoppingBag()
+    {
+        $url = $this->url."api/user/cart/get";
+        $response = Http::withHeaders(
+            ['Authorization' => session('tokenType').' '.session('token'),
+            ])->get($url);
+        if ($response->successful()){
+
+        }else{
+            echo "b";
+        }
+    }
     public function addToCart(Request $request)
     {
        $url = $this->url."api/user/cart/add";
-       $data = [
+       $response = Http::post($url, [
            'products' => [
-                'product_id' => $request['product_id'],
-                'quantity' => 1
+               'product_id' => $request['product_id'],
+               'quantity' => 1
            ]
-       ];
-       $response = Http::post($url, $data);
+       ]);
        if ($response->successful()){
             echo "okey";
        }else{
-           echo "olmadı yar";
+            echo "no";
        }
     }
 }
