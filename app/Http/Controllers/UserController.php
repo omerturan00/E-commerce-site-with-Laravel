@@ -16,7 +16,11 @@ class UserController extends Controller
         $this->data = [];
         $this->data['pageTitle'] = "Dedeoğlu Giyim - ";
         $this->url = "http://dedeoglu.dehapi.com/";
-
+        $categoriurl = $this->url."api/categories";
+        $response = Http::get($categoriurl);
+        if ($response->successful()){
+            $this->data['categories'] = $response['categories'];
+        }
     }
 
     public function register()

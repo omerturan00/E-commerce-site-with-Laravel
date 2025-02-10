@@ -279,17 +279,18 @@
                         <div class="product-img position-relative overflow-hidden">
                             <img class="img-fluid w-100" src="{{$product['image']}}" alt="">
                             <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square add-to-card" data-id="{{$product['product_id']}}"><i class="fa fa-shopping-cart"></i></a>
-                                <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                                @if($product['stock'] > 0)
+                                    <a class="btn btn-outline-dark btn-square add-to-card" data-id="{{$product['product_id']}}"><i class="fa fa-shopping-cart"></i></a>
+                                @endif
                             </div>
                         </div>
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate" href="">{{$product['name']}}</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                    @if($product['price']['sale_price'] && $product['price']['currency_symbol'])
+                                    @if($product['price']['sale_price'] && $product['price']['currency_symbol'] && $product['stock'] > 0)
                                        <h5> {{$product['price']['sale_price']}}{{$product['price']['currency_symbol']}}</h5>
+                                    @elseif($product['stock'] == 0)
+                                        <h5 class="text-danger">Stok Tükendi</h5>
                                     @else
                                        <p>Fiyatları görmek için giriş yapınız</p>
                                     @endif
@@ -305,34 +306,4 @@
 
 
 
-@endsection
-@section('pageCss')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-@endsection
-@section('pageJs')
-    <script>
-        $(document).ready(function (){
-            $('.add-to-card').click(function (){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                let pid = $(this).data('id');
-                $.ajax({
-                    url: "{{route('addToCart')}}",
-                    type: "POST",
-                    data: {
-                        product_id : pid
-                    },
-                    success: function(response) {
-                        console.log("eklendi");
-                    },
-                    error: function(xhr) {
-                        alert("Bir hata oluştu: " + xhr.responseJSON.message);
-                    }
-                });
-            });
-        });
-    </script>
 @endsection

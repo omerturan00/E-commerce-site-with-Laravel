@@ -21,6 +21,14 @@ Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
 Route::prefix('shopping-bag',)->group(function (){
     Route::get('', [MainController::class, 'shoppingBag'])->name('shoppingBag');
     Route::post('addToCart', [MainController::class, 'addToCart'])->name('addToCart');
+    Route::get('deleteToCart/(:num)', [MainController::class, 'deleteToCart'])->name('deleteToCart');
+    Route::get('shoppingBagInc', [MainController::class, 'shoppingBagInc'])->name('shoppingBagInc');
+    Route::get('shoppingBagDec', [MainController::class, 'shoppingBagDec'])->name('shoppingBagDec');
+    Route::get('shoppingBagReset', [MainController::class, 'shoppingBagReset'])->name('shoppingBagReset');
+});
+Route::prefix('categories')->group(function (){
+    Route::get('category-detail', [MainController::class, 'categoryDetail'])->name('categoryDetail');
+    Route::get('sub-category-detail', [MainController::class, 'subCategoryDetail'])->name('subCategoryDetail');
 });
 
 
